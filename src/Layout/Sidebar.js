@@ -15,6 +15,7 @@ function Sidebar() {
     'Authorization': `Bearer ${authToken}`
   };
   const handleSubMenuClick = (controller) => {
+    console.log(controller);
     navigate(`/${controller}`);
   };
   useEffect(() => {

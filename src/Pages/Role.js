@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import config from "../environment";
-import { toast } from "react-toastify"; 
-import { useNavigate } from "react-router-dom";
-import RoleModel from "./RoleModal"
+import { toast } from "react-toastify";
+import RoleModel from "./RoleModal";
 import {
   Table,
   TableBody,
@@ -47,7 +46,6 @@ function Role() {
   const [openUpdateDialog, setOpenUpdateDialog] = useState(false); // Fixed the error here
   const [openAddDialog, setOpenAddDialog] = useState(false);
 
-
   useEffect(() => {
     axios
       .get(`${config.baseApiUrl}/api/RoleMasterController/GetAll`, {
@@ -81,16 +79,20 @@ function Role() {
   useEffect(() => {
     fetchData();
   }, []);
-  
+
   const handleConfirmUpdate = () => {
     const updateData = {
       roleId: updateRoleId,
       roleName: newRoleName,
     };
     axios
-      .put(`${config.baseApiUrl}/api/RoleMasterController/RoleUpdate`, updateData, {
-        headers: headers,
-      })
+      .put(
+        `${config.baseApiUrl}/api/RoleMasterController/RoleUpdate`,
+        updateData,
+        {
+          headers: headers,
+        }
+      )
       .then((response) => {
         if (response.status === 200) {
           console.log("Role updated successfully");
@@ -108,9 +110,8 @@ function Role() {
         toast.error("Error updating role");
         closeUpdateDialog();
       });
-
   };
-  const handleEdit = (roleId,currentRoleName) => {
+  const handleEdit = (roleId, currentRoleName) => {
     setUpdateRoleId(roleId);
     setNewRoleName(currentRoleName);
     setOpenUpdateDialog(true);
@@ -146,7 +147,7 @@ function Role() {
           closeDeleteDialog();
         } else {
           console.log("Unexpected response:", response);
-          toast.error("Error deleting role");
+          toast.success("Role activated successfully");
           closeDeleteDialog();
         }
       })
@@ -161,39 +162,41 @@ function Role() {
       roleName: newRoleName,
     };
     axios
-    .post(`${config.baseApiUrl}/api/RoleMasterController/CreateRole`, newRoleData, {
-      headers: headers,
-    })
-    .then((response) => {
-      if (response.status === 200) {
-        console.log("Role added successfully");
-        toast.success("Role added successfully");
-        fetchData(); // Refresh the data
-        closeAddDialog(); // Close the dialog
-      } else {
-        console.log("Unexpected response:", response);
+      .post(
+        `${config.baseApiUrl}/api/RoleMasterController/CreateRole`,
+        newRoleData,
+        {
+          headers: headers,
+        }
+      )
+      .then((response) => {
+        if (response.status === 200) {
+          console.log("Role added successfully");
+          toast.success("Role added successfully");
+          fetchData();
+          closeAddDialog();
+        } else {
+          console.log("Unexpected response:", response);
+          toast.error("Error adding role");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
         toast.error("Error adding role");
-      }
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-      toast.error("Error adding role");
-    });
+      });
     closeAddDialog();
   };
-  
+
   const openAddDialogBox = () => {
     setOpenAddDialog(true);
   };
   const closeAddDialog = () => {
     setOpenAddDialog(false);
   };
-  
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
-
 
   const handleRequestSort = (property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -248,10 +251,10 @@ function Role() {
           console.log("Role deleted successfully");
           fetchData();
           toast.success("Role deleted successfully");
-          closeDeleteDialog();
+          
         } else {
           console.log("Unexpected response:", response);
-          toast.error("Error deleting role");
+          toast.success("Role deleted successfully");
           closeDeleteDialog();
         }
       })
@@ -272,21 +275,24 @@ function Role() {
       <br></br>
       <div className="row text-center" style={{ backgroundColor: "white" }}>
         <div className="col-md-10">
-        <h2
-          style={{
-            color: "#007bff",
-            fontFamily: "Ariel",
-            fontWeight: "bolder",
-          }}
-        >
-          ROLES
-        </h2>
+          <h2
+            style={{
+              color: "#007bff",
+              fontFamily: "Ariel",
+              fontWeight: "bolder",
+            }}
+          >
+            ROLES
+          </h2>
         </div>
         <div className="col-md-2">
-        <Button style={{ backgroundColor: '#007bff', color: 'white' }} onClick={openAddDialogBox}>Add New</Button>
-
-        </div>       
-       
+          <Button
+            style={{ backgroundColor: "#007bff", color: "white" }}
+            onClick={openAddDialogBox}
+          >
+            Add New
+          </Button>
+        </div>
       </div>
       <TableContainer component={Paper} style={{ height: "75vh" }}>
         <Table>
@@ -339,7 +345,7 @@ function Role() {
                         color="success"
                         startIcon={<EditIcon />}
                         style={{ marginRight: "8px" }}
-                        onClick={() => handleEdit(row.roleId,row.roleName)}
+                        onClick={() => handleEdit(row.roleId, row.roleName)}
                       ></Button>
                       <Button
                         variant="contained"
@@ -400,77 +406,72 @@ function Role() {
             </Button>
           </DialogActions>
         </Dialog>
+        <Dialog open={openUpdateDialog} onClose={closeUpdateDialog}>
+          <DialogTitle id="update-dialog-title">Update Role</DialogTitle>
+          <DialogContent>
+            <DialogContentText></DialogContentText>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="newRoleName"
+              label="Role Name"
+              type="text"
+              fullWidth
+              value={newRoleName}
+              onChange={handleRoleNameChange}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={closeUpdateDialog} color="primary">
+              Cancel
+            </Button>
+            <Button onClick={handleConfirmUpdate} color="primary">
+              Update
+            </Button>
+          </DialogActions>
+        </Dialog>
         <Dialog
-        open={openUpdateDialog}
-        onClose={closeUpdateDialog}
-      >
-        <DialogTitle id="update-dialog-title">Update Role</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-          </DialogContentText>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="newRoleName"
-            label="Role Name"
-            type="text"
-            fullWidth
-            value={newRoleName}
-            onChange={handleRoleNameChange}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={closeUpdateDialog} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={handleConfirmUpdate} color="primary">
-            Update
-          </Button>
-        </DialogActions>
-      </Dialog>
-      <Dialog
-  open={openAddDialog}
-  onClose={closeAddDialog}
-  PaperProps={{
-    style: {
-      maxWidth: "80%",
-    },
-  }}
-  modalWidth="100%"
-  BackdropProps={{
-    onClick: (event) => {
-      event.stopPropagation();
-    },
-  }}
->
-  <DialogTitle id="alert-dialog-title" style={{ color: "#007bff" }}>
-    {"Add New Role"}
-  </DialogTitle>
-  <DialogContent>
-    <DialogContentText id="alert-dialog-description">
-      {/* Here, you can add input fields for collecting new role data */}
-      <TextField
-        autoFocus
-        margin="dense"
-        id="newRoleName"
-        label="Role Name"
-        type="text"
-        fullWidth
-        value={newRoleName}
-        onChange={(event) => setNewRoleName(event.target.value)}
-      />
-    </DialogContentText>
-  </DialogContent>
-  <DialogActions>
-    <Button onClick={closeAddDialog} style={{ color: "#007bff" }}>
-      Cancel
-    </Button>
-    <Button onClick={handleAddRole} style={{ color: "#007bff" }}>
-      Add Role
-    </Button>
-  </DialogActions>
-</Dialog>
-
+          open={openAddDialog}
+          onClose={closeAddDialog}
+          PaperProps={{
+            style: {
+              maxWidth: "80%",
+            },
+          }}
+          modalWidth="100%"
+          BackdropProps={{
+            onClick: (event) => {
+              event.stopPropagation();
+            },
+          }}
+        >
+          <DialogTitle id="alert-dialog-title" style={{ color: "#007bff" }}>
+            {"Add New Role"}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              {/* Here, you can add input fields for collecting new role data */}
+              <TextField
+                autoFocus
+                margin="dense"
+                id="newRoleName"
+                label="Role Name"
+                type="text"
+                fullWidth
+                value={newRoleName}
+                onChange={(event) => setNewRoleName(event.target.value)}
+              />
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={closeAddDialog} style={{ color: "#007bff" }}>
+              Cancel
+            </Button>
+            <Button onClick={handleAddRole} style={{ color: "#007bff" }}>
+              Add Role
+            </Button>
+          </DialogActions>
+        </Dialog>
       </div>
     </div>
   );

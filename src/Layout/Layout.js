@@ -16,7 +16,9 @@ const Layout = ({ children, authenticated }) => {
         </div>
         <div className={authenticated ? 'col-md-10 ' : 'col-md-12 '}>{children}</div>
       </div>
+      
     </div>
+    
   );
 };
 

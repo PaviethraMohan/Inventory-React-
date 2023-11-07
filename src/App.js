@@ -10,6 +10,7 @@ import PageNotFound from "./Pages/PageNotFound";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import UserProfile from "./Pages/UserProfile";
+import Register from "./Pages/Register";
 
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
@@ -53,8 +54,17 @@ function App() {
               </PrivateRoute>
             }
           />
+        <Route
+            path="/Register"
+            element={
+              <PrivateRoute authenticated={authenticated}>
+                <Register />
+              </PrivateRoute>
+            }
+          />
         </Routes>
       </Layout>
+      <ToastContainer position="top-right" autoClose={2000} /> 
     </Router>
   );
 }

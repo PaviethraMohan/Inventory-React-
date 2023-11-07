@@ -1,0 +1,33 @@
+/* Add this CSS to your component's CSS file or a global CSS file */
+.custom-dialog {
+   
+    border-radius: 10px; /* Add rounded corners */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+  }
+  
+  
+  .custom-dialog .MuiDialogTitle-root {
+    background-color: #007bff; /* Change the title bar background color */
+    color: white; /* Change the title text color */
+    border-top-left-radius: 10px; /* Match the dialog's border radius */
+    border-top-right-radius: 10px; /* Match the dialog's border radius */
+  }
+  
+  .custom-dialog .MuiDialogContent-root {
+    padding: 5px; /* Add some padding to the content area */
+  }
+  
+  .custom-dialog .MuiDialogActions-root {
+    justify-content: flex-end; /* Align actions to the right */
+    padding: 10px; /* Add some padding to the actions area */
+  }
+  
+  .custom-dialog p {
+    margin: 8px 0; /* Adjust the spacing between paragraphs */
+  }
+  
+  /* Customize the button style if needed */
+  .custom-dialog .MuiButton-root {
+    margin-right: 8px;
+  }
+  
