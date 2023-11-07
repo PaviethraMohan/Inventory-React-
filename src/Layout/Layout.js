@@ -11,10 +11,10 @@ const Layout = ({ children, authenticated }) => {
        
       </div>
       <div className="row">
-        <div className='col-md-2'>
+        <div className='col-md-2 p-0 pr-1'>
         {authenticated && <Sidebar />}
         </div>
-        <div className={authenticated ? 'col-md-10' : 'col-md-12'}>{children}</div>
+        <div className={authenticated ? 'col-md-10 ' : 'col-md-12 '}>{children}</div>
       </div>
     </div>
   );
